@@ -1,0 +1,9 @@
+{
+    "commands": [
+        {
+            "name": "geocode",
+            "aliases": "g",
+            "class": "ride\\cli\\command\\GeocodeCommand"
+        }
+    ]
+}

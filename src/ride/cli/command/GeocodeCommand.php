@@ -2,7 +2,6 @@
 
 namespace ride\cli\command;
 
-use ride\library\cli\command\AbstractCommand;
 use ride\library\geocode\Geocoder;
 
 /**
@@ -11,34 +10,23 @@ use ride\library\geocode\Geocoder;
 class GeocodeCommand extends AbstractCommand {
 
     /**
-     * Instance of the geocoder
-     * @var ride\library\geocode\Geocoder
-     */
-    protected $geocoder;
-
-    /**
-     * Constructs a new geocode command
-     * @param \ride\library\geocode\Geocoder $geocoder
+     * Initializes the command
      * @return null
      */
-    public function __construct(Geocoder $geocoder) {
-        parent::__construct('geocode', 'Geocodes the provided address');
+    protected function initialize() {
+        $this->setDescription('Geocodes the provided address');
 
         $this->addArgument('service', 'Id of the geocode service');
         $this->addArgument('address', 'Address to lookup', true, true);
-
-        $this->geocoder = $geocoder;
     }
 
     /**
-     * Executes the command
+     * Invokes the command
+     * @param \ride\library\geocode\Geocoder $geocoder
      * @return null
      */
-    public function execute() {
-        $service = $this->input->getArgument('service');
-        $address = $this->input->getArgument('address');
-
-        $results = $this->geocoder->geocode($service, $address);
+    public function invoke(Geocoder $geocoder, $service, $address) {
+        $results = $geocoder->geocode($service, $address);
         foreach ($results as $result) {
             $this->output->writeLine('Coordinate: ' . $result->getCoordinate());
             $this->output->writeLine('Street: ' . $result->getStreet());
